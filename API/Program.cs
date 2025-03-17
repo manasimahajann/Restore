@@ -4,7 +4,9 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddCors();
 
+        
 builder.Services.AddControllers();
 
 builder.Services.AddDbContext<StoreContext>(opt => {
@@ -12,10 +14,14 @@ builder.Services.AddDbContext<StoreContext>(opt => {
 });
 
 var app = builder.Build();
-
 // Configure the HTTP request pipeline.
 
 
+app.UseCors(options =>
+{
+    options.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:3000");
+}
+);
 
 app.MapControllers();
 DbInitializer.InitDb(app);
