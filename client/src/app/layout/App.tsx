@@ -1,26 +1,16 @@
-import { useEffect, useState } from 'react'  
-import axios from 'axios';
-import { product } from '../models/product';
-import Catalog from '../features/catalog/Catalog'; 
-import { Box, Button, Container, createTheme, CssBaseline, ThemeProvider, Typography } from '@mui/material';
+import {useState } from 'react'    
+import { Box, Container, createTheme, CssBaseline, ThemeProvider } from '@mui/material';
 import Navbar from './Navbar';
+import { Outlet } from 'react-router-dom';
 
 function App() {
 
-  const [products, setProducts] = useState<product[]>([]) 
-
-  
   const [themeMode, setThemeMode] = useState(true)
   const themeChange = () => { 
       setThemeMode(!themeMode)
   }
   const palleteType = themeMode ? 'dark' : 'light'
 
-  useEffect(()=>{
-    fetch("https://localhost:5001/api/products/")
-    .then(response => response.json())
-    .then(data => setProducts(data))  
-  }, [])
 
  
   const theme = createTheme({
@@ -43,7 +33,7 @@ function App() {
         :   'radial-gradient(circle, #baecf9, #f0f9ff)' ,py:6
       }}>
         <Container maxWidth='xl' sx={{mt:8}}> 
-          <Catalog products={products}/> 
+          <Outlet/> 
         </Container>
      </Box>
      </ThemeProvider>

@@ -1,5 +1,6 @@
 import { Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Typography } from "@mui/material"
 import { Product } from "../../models/product"
+import { Link, NavLink } from "react-router-dom"
 
 type Props = {
     product: Product
@@ -18,8 +19,7 @@ function ProductCard({product}: Props) {
         <CardMedia 
             sx={{height: 240, backgroundSize: 'cover'}}
                 image={product.pictureUrl}
-                title={product.title}
-            
+                title={product.title} 
             />
             <CardContent>
                 <Typography gutterBottom
@@ -36,7 +36,7 @@ function ProductCard({product}: Props) {
             <CardActions
             sx={{justifyContent: 'space-between'}}>
                 <Button> Add to Cart </Button>
-                <Button> View </Button>
+                <Button component={Link} to={`/catalog/${product.id}`}> View </Button>
             </CardActions>
     </Card>
   )
