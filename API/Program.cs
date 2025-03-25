@@ -4,9 +4,14 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddCors();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend",
+        policy => policy.AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .WithOrigins("https://localhost:3000"));
+});
 
-        
 builder.Services.AddControllers();
 
 builder.Services.AddDbContext<StoreContext>(opt => {
@@ -14,15 +19,12 @@ builder.Services.AddDbContext<StoreContext>(opt => {
 });
 
 var app = builder.Build();
-// Configure the HTTP request pipeline.
 
-
-app.UseCors(options =>
-{
-    options.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:3000");
-}
-);
+// Use CORS before controllers
+app.UseCors("AllowFrontend");
 
 app.MapControllers();
+
 DbInitializer.InitDb(app);
+
 app.Run();
