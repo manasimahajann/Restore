@@ -1,6 +1,8 @@
 import { DarkMode, LightMode, ShoppingCart } from "@mui/icons-material"
-import { AppBar, Badge, Box, IconButton, List, ListItem, Toolbar, Typography } from "@mui/material"
+import { AppBar, Badge, Box, IconButton, LinearProgress, List, ListItem, Toolbar, Typography } from "@mui/material"
 import { NavLink } from "react-router-dom"
+import { useAppDispatch, useAppSelector } from "../store/store"
+import { setDarkMode } from "./uiSlice"
 
 const midLinks = [
   {title: 'about', path: '/about'},
@@ -24,13 +26,12 @@ const navStyles = {
   '&.active': {
     color: '#baecf9'
   }  }
-type Props = {
-    themeMode: boolean,
-    themeChange: () => void;
-}
+ 
 
-function Navbar({themeMode, themeChange}: Props) { 
+function Navbar() {  
 
+  const {isLoading, darkMode} = useAppSelector(state => state.ui);
+     const dispatch = useAppDispatch();
   return (
     <Box sx={{ flexGrow: 1 }}>
     <AppBar position="fixed">
@@ -39,9 +40,8 @@ function Navbar({themeMode, themeChange}: Props) {
           <Typography component={NavLink} to='/' variant="h6" sx={{textDecoration: 'none', color: 'inherit'}}>
             RE-STORE
           </Typography> 
- 
-          <IconButton onClick={themeChange}>
-              {themeMode? <DarkMode sx={{color:"grey"}}/> : <LightMode sx={{color:"yellow"}}/>}
+          <IconButton onClick={() => dispatch(setDarkMode())}>
+              {darkMode? <DarkMode sx={{color:"grey"}}/> : <LightMode sx={{color:"yellow"}}/>}
           </IconButton>
         </Box>
 
@@ -81,6 +81,7 @@ function Navbar({themeMode, themeChange}: Props) {
         </List>
         </Box>
       </Toolbar>
+
     </AppBar>
   </Box>
   )
